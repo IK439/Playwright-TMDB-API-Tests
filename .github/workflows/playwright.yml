@@ -19,8 +19,9 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test --reporter=html
+    - name: Ensure playwright-report exists
+      run: mkdir -p playwright-report
     - uses: actions/upload-artifact@v4
-      # Upload artifact even if tests fail or folder doesn't exist
       if: ${{ always() }}
       with:
         name: playwright-report

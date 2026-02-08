@@ -8,5 +8,4 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 .env
-playwright.config.ts
 .DS_Store

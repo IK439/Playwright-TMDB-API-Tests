@@ -52,6 +52,24 @@ export class TMDBClient {
     return response.json();
   }
 
+  // Fetch the list of person ids that have been changed in the past 24 hours
+  async getPeopleList(): Promise<Changes> {
+    const response = await this.#request.get(`${this.#apiVer}/person/changes`, {
+      params: { api_key: this.#apiKey, page: 1 },
+    });
+
+    return response.json();
+  }
+
+  // Fetch the list of tv ids that have been changed in the past 24 hours
+  async getTVList(): Promise<Changes> {
+    const response = await this.#request.get(`${this.#apiVer}/tv/changes`, {
+      params: { api_key: this.#apiKey, page: 1 },
+    });
+
+    return response.json();
+  }
+
   // Fetch a paginated list of popular movies
   async getPopularMovies(): Promise<PopularMovies> {
     const response = await this.#request.get(`${this.#apiVer}/movie/popular`, {

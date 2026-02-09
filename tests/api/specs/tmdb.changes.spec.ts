@@ -31,4 +31,60 @@ test.describe("TMDB API - Changes", () => {
 
     expect(valid).toBe(true);
   });
+
+  test("Fetch people list", async ({ tmdbClient }) => {
+    const changes = await tmdbClient.getPeopleList();
+
+    expect(changes.results).toBeDefined();
+
+    // Iterate over the results object
+    for (const result of changes.results) {
+      expect(result.id).toBeDefined();
+      expect(typeof result.adult).toBeTruthy();
+    }
+
+    expect(changes.page).toEqual(1);
+    expect(changes.total_pages).toBeGreaterThanOrEqual(1);
+    expect(changes.total_results).toBeGreaterThanOrEqual(1);
+
+    // Validate the full API response against the schema
+    const ajv = new Ajv({ allErrors: true });
+    const validate = ajv.compile(changesSchema);
+    const valid = validate(changes);
+
+    // If validation fails, log detailed schema errors
+    if (!valid) {
+      console.log(JSON.stringify(validate.errors, null, 2));
+    }
+
+    expect(valid).toBe(true);
+  });
+
+  test("Fetch tv list", async ({ tmdbClient }) => {
+    const changes = await tmdbClient.getTVList();
+
+    expect(changes.results).toBeDefined();
+
+    // Iterate over the results object
+    for (const result of changes.results) {
+      expect(result.id).toBeDefined();
+      expect(typeof result.adult).toBeTruthy();
+    }
+
+    expect(changes.page).toEqual(1);
+    expect(changes.total_pages).toBeGreaterThanOrEqual(1);
+    expect(changes.total_results).toBeGreaterThanOrEqual(1);
+
+    // Validate the full API response against the schema
+    const ajv = new Ajv({ allErrors: true });
+    const validate = ajv.compile(changesSchema);
+    const valid = validate(changes);
+
+    // If validation fails, log detailed schema errors
+    if (!valid) {
+      console.log(JSON.stringify(validate.errors, null, 2));
+    }
+
+    expect(valid).toBe(true);
+  });
 });

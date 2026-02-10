@@ -1,3 +1,9 @@
+export interface Auth {
+  success: boolean;
+  expires_at: string;
+  request_token: string;
+}
+
 export interface Certifications {
   certification: string;
   meaning: string;

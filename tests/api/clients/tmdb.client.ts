@@ -1,10 +1,5 @@
 import { APIRequestContext, expect } from "@playwright/test";
-import {
-  CertificationsResponse,
-  Changes,
-  PopularMovies,
-  Movie,
-} from "../types/movie.types";
+import type * as Type from "../types/tmdb.types";
 
 // Client wrapper for interacting with the TMDB API
 export class TMDBClient {
@@ -19,8 +14,41 @@ export class TMDBClient {
     this.#apiKey = apiKey;
   }
 
+  // Create request token
+  async getRequestToken(): Promise<Type.Auth> {
+    const response = await this.#request.get(
+      `${this.#apiVer}/authentication/token/new`,
+      {
+        params: { api_key: this.#apiKey },
+      },
+    );
+
+    return response.json();
+  }
+
+  // Create session (with login)
+  async postAuth(
+    userName: string,
+    passWord: string,
+    requestToken: string,
+  ): Promise<Type.Auth> {
+    const response = await this.#request.post(
+      `${this.#apiVer}/authentication/token/validate_with_login`,
+      {
+        params: { api_key: this.#apiKey },
+        data: {
+          username: userName,
+          password: passWord,
+          request_token: requestToken,
+        },
+      },
+    );
+
+    return response.json();
+  }
+
   // Fetch the list of movie certifications
-  async getMovieCertifications(): Promise<CertificationsResponse> {
+  async getMovieCertifications(): Promise<Type.CertificationsResponse> {
     const response = await this.#request.get(
       `${this.#apiVer}/certification/movie/list`,
       {
@@ -32,7 +60,7 @@ export class TMDBClient {
   }
 
   // Fetch the list of tv certifications
-  async getTVCertifications(): Promise<CertificationsResponse> {
+  async getTVCertifications(): Promise<Type.CertificationsResponse> {
     const response = await this.#request.get(
       `${this.#apiVer}/certification/tv/list`,
       {
@@ -44,7 +72,7 @@ export class TMDBClient {
   }
 
   // Fetch the list of movie ids that have been changed in the past 24 hours
-  async getMovieList(): Promise<Changes> {
+  async getMovieList(): Promise<Type.Changes> {
     const response = await this.#request.get(`${this.#apiVer}/movie/changes`, {
       params: { api_key: this.#apiKey, page: 1 },
     });
@@ -53,7 +81,7 @@ export class TMDBClient {
   }
 
   // Fetch the list of person ids that have been changed in the past 24 hours
-  async getPeopleList(): Promise<Changes> {
+  async getPeopleList(): Promise<Type.Changes> {
     const response = await this.#request.get(`${this.#apiVer}/person/changes`, {
       params: { api_key: this.#apiKey, page: 1 },
     });
@@ -62,7 +90,7 @@ export class TMDBClient {
   }
 
   // Fetch the list of tv ids that have been changed in the past 24 hours
-  async getTVList(): Promise<Changes> {
+  async getTVList(): Promise<Type.Changes> {
     const response = await this.#request.get(`${this.#apiVer}/tv/changes`, {
       params: { api_key: this.#apiKey, page: 1 },
     });
@@ -71,7 +99,7 @@ export class TMDBClient {
   }
 
   // Fetch a paginated list of popular movies
-  async getPopularMovies(): Promise<PopularMovies> {
+  async getPopularMovies(): Promise<Type.PopularMovies> {
     const response = await this.#request.get(`${this.#apiVer}/movie/popular`, {
       params: { api_key: this.#apiKey },
     });
@@ -80,7 +108,7 @@ export class TMDBClient {
   }
 
   // Fetch full details for a single movie by its TMDB ID
-  async getMovieById(movieId: number): Promise<Movie> {
+  async getMovieById(movieId: number): Promise<Type.Movie> {
     const response = await this.#request.get(
       `${this.#apiVer}/movie/${movieId}`,
       {

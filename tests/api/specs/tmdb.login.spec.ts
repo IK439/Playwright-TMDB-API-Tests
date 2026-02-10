@@ -9,7 +9,7 @@ test.describe("TMDB API - Auth", () => {
 
     expect(token.success).toBeTruthy();
     expect(token.expires_at).toMatch(/\d{4}-\d{2}-\d{2}/);
-    expect(token.success).toBeTruthy();
+    expect(token.request_token).toBeTruthy();
 
     let requestToken = token.request_token;
     const userName = process.env.TMDB_USERNAME as string;
@@ -19,6 +19,6 @@ test.describe("TMDB API - Auth", () => {
 
     expect(login.success).toBeTruthy();
     expect(login.expires_at).toMatch(/\d{4}-\d{2}-\d{2}/);
-    expect(login.success).toBeTruthy();
+    expect(login.request_token).toBeTruthy();
   });
 });

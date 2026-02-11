@@ -1,7 +1,28 @@
+export interface GuestSession {
+  success: boolean;
+  guest_session_id: string;
+  expires_at: string;
+}
+
 export interface Auth {
   success: boolean;
   expires_at: string;
   request_token: string;
+}
+
+export interface CreateSession {
+  success: boolean;
+  session_id: string;
+}
+
+export interface DeleteSession {
+  success: boolean;
+}
+
+export interface ValidateKey {
+  success: boolean;
+  status_code: number;
+  status_message: string;
 }
 
 export interface Certifications {

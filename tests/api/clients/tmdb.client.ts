@@ -7,11 +7,22 @@ export class TMDBClient {
   #apiVer: string;
   #apiKey: string;
 
-  // Create a new TMDBClient instance
   constructor(request: APIRequestContext, ver: string, apiKey: string) {
     this.#request = request;
     this.#apiVer = ver;
     this.#apiKey = apiKey;
+  }
+
+  // Create guest session
+  async createGuestSession(): Promise<Type.GuestSession> {
+    const response = await this.#request.get(
+      `${this.#apiVer}/authentication/guest_session/new`,
+      {
+        params: { api_key: this.#apiKey },
+      },
+    );
+
+    return response.json();
   }
 
   // Create request token
@@ -43,6 +54,54 @@ export class TMDBClient {
         },
       },
     );
+
+    return response.json();
+  }
+
+  // Create session
+  async createSession(requestToken: string): Promise<Type.CreateSession> {
+    const response = await this.#request.post(
+      `${this.#apiVer}/authentication/session/new`,
+      {
+        params: { api_key: this.#apiKey },
+        data: {
+          request_token: requestToken,
+        },
+      },
+    );
+
+    return response.json();
+  }
+
+  // Delete session
+  async deleteSession(sessionId: string): Promise<Type.DeleteSession> {
+    const response = await this.#request.delete(
+      `${this.#apiVer}/authentication/session`,
+      {
+        params: { api_key: this.#apiKey },
+        data: {
+          session_id: sessionId,
+        },
+      },
+    );
+
+    return response.json();
+  }
+
+  // Check valid key response
+  async validKeyResponse(): Promise<Type.ValidateKey> {
+    const response = await this.#request.get(`${this.#apiVer}/authentication`, {
+      params: { api_key: this.#apiKey },
+    });
+
+    return response.json();
+  }
+
+  // Check invalid key response
+  async invalidKeyResponse(): Promise<Type.ValidateKey> {
+    const response = await this.#request.get(`${this.#apiVer}/authentication`, {
+      params: { api_key: "Invalid Key" },
+    });
 
     return response.json();
   }

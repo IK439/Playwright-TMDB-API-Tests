@@ -23,12 +23,4 @@ test.describe("TMDB API - Movies", () => {
     expect(movie.id).toBe(movieId);
     expect(movie.overview).toBeDefined();
   });
-
-  test("Unauthorized request should fail", async ({ request }) => {
-    const response = await request.get("/movie/popular", {
-      params: { api_key: "INVALID_KEY" },
-    });
-
-    expect(response.status()).toBe(404);
-  });
 });

@@ -177,4 +177,35 @@ export class TMDBClient {
 
     return response.json();
   }
+
+  // Fetch collection
+  async getCollection(): Promise<Type.SearchCollectionResponse> {
+    const response = await this.#request.get(
+      `${this.#apiVer}/search/collection`,
+      {
+        params: {
+          api_key: this.#apiKey,
+          query: "The Avengers Collection",
+          language: "en-US",
+          page: 1,
+        },
+      },
+    );
+
+    return response.json();
+  }
+
+  // Fetch collection details
+  async getCollectionDetail(
+    collectionId: number,
+  ): Promise<Type.CollectionDetailsResponse> {
+    const response = await this.#request.get(
+      `${this.#apiVer}/collection/${collectionId}`,
+      {
+        params: { api_key: this.#apiKey, collection_id: collectionId },
+      },
+    );
+
+    return response.json();
+  }
 }

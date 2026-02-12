@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures/api-fixture";
-import Ajv from "ajv";
 import * as Schema from "../schemas/collections.schema";
+import { validateSchema } from "../utils/schemaValidator";
 
 // Group collection API tests together
 test.describe("TMDB API - Collection", () => {
@@ -25,16 +25,7 @@ test.describe("TMDB API - Collection", () => {
     expect(firstResult.poster_path).toBeDefined();
 
     // Validate the full API response against the schema
-    const ajv = new Ajv({ allErrors: true });
-    const validate = ajv.compile(Schema.searchCollectionSchema);
-    const valid = validate(collection);
-
-    // If validation fails, log detailed schema errors
-    if (!valid) {
-      console.log(JSON.stringify(validate.errors, null, 2));
-    }
-
-    expect(valid).toBe(true);
+    validateSchema(Schema.searchCollectionSchema, collection);
   });
 });
 
@@ -76,15 +67,6 @@ test.describe("TMDB API - Collection Details", () => {
     expect(firstPart.vote_count).toBeGreaterThanOrEqual(0);
 
     // Validate the full API response against the schema
-    const ajv = new Ajv({ allErrors: true });
-    const validate = ajv.compile(Schema.collectionDetailsSchema);
-    const valid = validate(collectionDetail);
-
-    // If validation fails, log detailed schema errors
-    if (!valid) {
-      console.log(JSON.stringify(validate.errors, null, 2));
-    }
-
-    expect(valid).toBe(true);
+    validateSchema(Schema.collectionDetailsSchema, collectionDetail);
   });
 });

@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures/api-fixture";
-import Ajv from "ajv";
 import { changesSchema } from "../schemas/changes.schema";
+import { validateSchema } from "../utils/schemaValidator";
 
 // Group all changes-related API tests together
 test.describe("TMDB API - Changes", () => {
@@ -20,16 +20,7 @@ test.describe("TMDB API - Changes", () => {
     expect(changes.total_results).toBeGreaterThanOrEqual(1);
 
     // Validate the full API response against the schema
-    const ajv = new Ajv({ allErrors: true });
-    const validate = ajv.compile(changesSchema);
-    const valid = validate(changes);
-
-    // If validation fails, log detailed schema errors
-    if (!valid) {
-      console.log(JSON.stringify(validate.errors, null, 2));
-    }
-
-    expect(valid).toBe(true);
+    validateSchema(changesSchema, changes);
   });
 
   test("Fetch people list", async ({ tmdbClient }) => {
@@ -48,16 +39,7 @@ test.describe("TMDB API - Changes", () => {
     expect(changes.total_results).toBeGreaterThanOrEqual(1);
 
     // Validate the full API response against the schema
-    const ajv = new Ajv({ allErrors: true });
-    const validate = ajv.compile(changesSchema);
-    const valid = validate(changes);
-
-    // If validation fails, log detailed schema errors
-    if (!valid) {
-      console.log(JSON.stringify(validate.errors, null, 2));
-    }
-
-    expect(valid).toBe(true);
+    validateSchema(changesSchema, changes);
   });
 
   test("Fetch tv list", async ({ tmdbClient }) => {
@@ -76,15 +58,6 @@ test.describe("TMDB API - Changes", () => {
     expect(changes.total_results).toBeGreaterThanOrEqual(1);
 
     // Validate the full API response against the schema
-    const ajv = new Ajv({ allErrors: true });
-    const validate = ajv.compile(changesSchema);
-    const valid = validate(changes);
-
-    // If validation fails, log detailed schema errors
-    if (!valid) {
-      console.log(JSON.stringify(validate.errors, null, 2));
-    }
-
-    expect(valid).toBe(true);
+    validateSchema(changesSchema, changes);
   });
 });

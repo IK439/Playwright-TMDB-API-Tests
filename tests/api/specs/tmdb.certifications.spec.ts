@@ -1,6 +1,6 @@
 import { test, expect } from "../fixtures/api-fixture";
-import Ajv from "ajv";
 import { certificationsSchema } from "../schemas/certifications.schema";
+import { validateSchema } from "../utils/schemaValidator";
 
 // Group all movie certification-related API tests together
 test.describe("TMDB API - Movie Certifications", () => {
@@ -30,16 +30,7 @@ test.describe("TMDB API - Movie Certifications", () => {
     }
 
     // Validate the full API response against the schema
-    const ajv = new Ajv({ allErrors: true });
-    const validate = ajv.compile(certificationsSchema);
-    const valid = validate(certifications);
-
-    // If validation fails, log detailed schema errors
-    if (!valid) {
-      console.log(JSON.stringify(validate.errors, null, 2));
-    }
-
-    expect(valid).toBe(true);
+    validateSchema(certificationsSchema, certifications);
   });
 });
 
@@ -70,16 +61,7 @@ test.describe("TMDB API - TV Certifications", () => {
       });
     }
 
-    // Validate the API response against the schema
-    const ajv = new Ajv({ allErrors: true });
-    const validate = ajv.compile(certificationsSchema);
-    const valid = validate(certifications);
-
-    // Log schema errors if validation fails
-    if (!valid) {
-      console.log(JSON.stringify(validate.errors, null, 2));
-    }
-
-    expect(valid).toBe(true);
+    // Validate the full API response against the schema
+    validateSchema(certificationsSchema, certifications);
   });
 });

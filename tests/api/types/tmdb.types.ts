@@ -103,3 +103,42 @@ export interface CollectionDetailsResponse {
     vote_count: number;
   }[];
 }
+
+export interface CollectionImagesResponse {
+  id: number;
+  backdrops: {
+    aspect_ratio: number;
+    height: number;
+    iso_3166_1: string | null;
+    iso_639_1: string | null;
+    file_path: string;
+    vote_average: number;
+    vote_count: number;
+    width: number;
+  }[];
+  posters: {
+    aspect_ratio: number;
+    height: number;
+    iso_3166_1: string | null;
+    iso_639_1: string | null;
+    file_path: string;
+    vote_average: number;
+    vote_count: number;
+    width: number;
+  }[];
+}
+
+export interface CollectionTranslationsResponse {
+  id: number;
+  translations: {
+    iso_3166_1: string;
+    iso_639_1: string;
+    name: string;
+    english_name: string;
+    data: {
+      title: string;
+      overview: string;
+      homepage: string;
+    };
+  }[];
+}

@@ -11,13 +11,15 @@ type MyFixtures = {
 export const test = base.extend<MyFixtures>({
   // Define the tmdbClient fixture
   tmdbClient: async ({ request }, use) => {
+    const version = process.env.TMDB_API_VERSION;
+    const apiKey = process.env.TMDB_API_KEY;
+
+    if (!version || !apiKey) {
+      throw new Error("TMDB environment variables not set");
+    }
+
     // Create a new TMDBClient using Playwright's APIRequestContext
-    // API version and API key are read from environment variables
-    const client = new TMDBClient(
-      request,
-      process.env.TMDB_API_VERSION as string,
-      process.env.TMDB_API_KEY as string,
-    );
+    const client = new TMDBClient(request, version, apiKey);
 
     // Make the client available to the test
     await use(client);

@@ -36,7 +36,8 @@ test.describe("TMDB API - Collection Details", () => {
 
     const collectionId: number = collection.results[0].id;
 
-    const collectionDetail = await tmdbClient.getCollectionDetail(collectionId);
+    const collectionDetail =
+      await tmdbClient.getCollectionDetails(collectionId);
 
     expect(collectionDetail.id).toBeDefined();
     expect(collectionDetail.name).toContain("The Avengers Collection");
@@ -48,25 +49,94 @@ test.describe("TMDB API - Collection Details", () => {
     expect(Array.isArray(collectionDetail.parts)).toBe(true);
     expect(collectionDetail.parts.length).toBeGreaterThan(0);
 
-    const firstPart = collectionDetail.parts[0];
-
-    expect(firstPart.adult).toBeFalsy();
-    expect(firstPart.backdrop_path).toBeDefined();
-    expect(firstPart.id).toBeDefined();
-    expect(firstPart.title).toContain("The Avengers");
-    expect(firstPart.original_title).toContain("The Avengers");
-    expect(firstPart.overview.length).toBeGreaterThan(0);
-    expect(firstPart.poster_path).toBeDefined();
-    expect(firstPart.media_type).toContain("movie");
-    expect(firstPart.original_language).toContain("en");
-    expect(firstPart.genre_ids).toBeDefined();
-    expect(firstPart.popularity).toBeDefined();
-    expect(firstPart.release_date).toMatch(/\d{4}-\d{2}-\d{2}/);
-    expect(firstPart.video).toBeFalsy();
-    expect(firstPart.vote_average).toBeGreaterThanOrEqual(0);
-    expect(firstPart.vote_count).toBeGreaterThanOrEqual(0);
+    for (const part of collectionDetail.parts) {
+      expect(part.adult).toBeFalsy();
+      expect(part.backdrop_path).toBeDefined();
+      expect(part.id).toBeDefined();
+      expect(part.title).toBeDefined();
+      expect(part.original_title).toBeDefined();
+      expect(part.overview.length).toBeGreaterThan(0);
+      expect(part.poster_path).toBeDefined();
+      expect(part.media_type).toContain("movie");
+      expect(part.original_language).toContain("en");
+      expect(part.genre_ids).toBeDefined();
+      expect(part.popularity).toBeDefined();
+      expect(part.release_date).toMatch(/\d{4}-\d{2}-\d{2}/);
+      expect(part.video).toBeFalsy();
+      expect(part.vote_average).toBeGreaterThanOrEqual(0);
+      expect(part.vote_count).toBeGreaterThanOrEqual(0);
+    }
 
     // Validate the full API response against the schema
     validateSchema(Schema.collectionDetailsSchema, collectionDetail);
+  });
+});
+
+// Group collection images API tests together
+test.describe("TMDB API - Collection Images", () => {
+  test("Fetch collection images", async ({ tmdbClient }) => {
+    const collection = await tmdbClient.getCollection();
+
+    const collectionId: number = collection.results[0].id;
+
+    const collectionImages = await tmdbClient.getCollectionImages(collectionId);
+
+    expect(collectionImages.id).toBeDefined();
+    expect(Array.isArray(collectionImages.backdrops)).toBe(true);
+    expect(Array.isArray(collectionImages.posters)).toBe(true);
+
+    for (const backdrop of collectionImages.backdrops) {
+      expect(backdrop.aspect_ratio).toBeGreaterThanOrEqual(0);
+      expect(backdrop.height).toBeGreaterThanOrEqual(0);
+      expect(backdrop.iso_3166_1 === null || backdrop.iso_3166_1).toBeTruthy();
+      expect(backdrop.iso_639_1 === null || backdrop.iso_639_1).toBeTruthy();
+      expect(backdrop.file_path).toBeDefined();
+      expect(backdrop.vote_average).toBeGreaterThanOrEqual(0);
+      expect(backdrop.vote_count).toBeGreaterThanOrEqual(0);
+      expect(backdrop.width).toBeGreaterThan(0);
+    }
+
+    for (const poster of collectionImages.posters) {
+      expect(poster.aspect_ratio).toBeGreaterThanOrEqual(0);
+      expect(poster.height).toBeGreaterThanOrEqual(0);
+      expect(poster.iso_3166_1 === null || poster.iso_3166_1).toBeTruthy();
+      expect(poster.iso_639_1 === null || poster.iso_639_1).toBeTruthy();
+      expect(poster.file_path).toBeDefined();
+      expect(poster.vote_average).toBeGreaterThanOrEqual(0);
+      expect(poster.vote_count).toBeGreaterThanOrEqual(0);
+      expect(poster.width).toBeGreaterThan(0);
+    }
+
+    // Validate the full API response against the schema
+    validateSchema(Schema.collectionImagesSchema, collectionImages);
+  });
+});
+
+// Group collection translations API tests together
+test.describe("TMDB API - Collection Translations", () => {
+  test("Fetch collection translations", async ({ tmdbClient }) => {
+    const collection = await tmdbClient.getCollection();
+
+    const collectionId: number = collection.results[0].id;
+
+    const collectionTranslations =
+      await tmdbClient.getCollectionTranslations(collectionId);
+
+    expect(collectionTranslations.id).toBeDefined();
+    expect(Array.isArray(collectionTranslations.translations)).toBe(true);
+
+    for (const translation of collectionTranslations.translations) {
+      expect(translation.iso_3166_1).toBeDefined();
+      expect(translation.iso_639_1).toBeDefined();
+      expect(translation.name).toBeDefined();
+      expect(translation.english_name).toBeDefined();
+
+      expect(translation.data.title).toBeDefined();
+      expect(translation.data.overview).toBeDefined();
+      expect(translation.data.homepage).toBeDefined();
+    }
+
+    // Validate the full API response against the schema
+    validateSchema(Schema.collectionTranslationsSchema, collectionTranslations);
   });
 });

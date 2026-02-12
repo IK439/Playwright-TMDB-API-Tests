@@ -196,13 +196,41 @@ export class TMDBClient {
   }
 
   // Fetch collection details
-  async getCollectionDetail(
+  async getCollectionDetails(
     collectionId: number,
   ): Promise<Type.CollectionDetailsResponse> {
     const response = await this.#request.get(
       `${this.#apiVer}/collection/${collectionId}`,
       {
         params: { api_key: this.#apiKey, collection_id: collectionId },
+      },
+    );
+
+    return response.json();
+  }
+
+  // Fetch collection images
+  async getCollectionImages(
+    collectionId: number,
+  ): Promise<Type.CollectionImagesResponse> {
+    const response = await this.#request.get(
+      `${this.#apiVer}/collection/${collectionId}/images`,
+      {
+        params: { api_key: this.#apiKey },
+      },
+    );
+
+    return response.json();
+  }
+
+  // Fetch collection translations
+  async getCollectionTranslations(
+    collectionId: number,
+  ): Promise<Type.CollectionTranslationsResponse> {
+    const response = await this.#request.get(
+      `${this.#apiVer}/collection/${collectionId}/translations`,
+      {
+        params: { api_key: this.#apiKey },
       },
     );
 

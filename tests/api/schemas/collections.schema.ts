@@ -104,3 +104,99 @@ export const collectionDetailsSchema = {
   },
   additionalProperties: false,
 };
+
+export const collectionImagesSchema = {
+  type: "object",
+  required: ["id", "backdrops", "posters"],
+  properties: {
+    id: { type: "number" },
+    backdrops: {
+      type: "array",
+      items: {
+        type: "object",
+        required: [
+          "aspect_ratio",
+          "height",
+          "iso_3166_1",
+          "iso_639_1",
+          "file_path",
+          "vote_average",
+          "vote_count",
+          "width",
+        ],
+        properties: {
+          aspect_ratio: { type: "number" },
+          height: { type: "number" },
+          iso_3166_1: { oneOf: [{ type: "string" }, { type: "null" }] },
+          iso_639_1: { oneOf: [{ type: "string" }, { type: "null" }] },
+          file_path: { type: "string" },
+          vote_average: { type: "number" },
+          vote_count: { type: "number" },
+          width: { type: "number" },
+        },
+        additionalProperties: false,
+      },
+    },
+    posters: {
+      type: "array",
+      items: {
+        type: "object",
+        required: [
+          "aspect_ratio",
+          "height",
+          "iso_3166_1",
+          "iso_639_1",
+          "file_path",
+          "vote_average",
+          "vote_count",
+          "width",
+        ],
+        properties: {
+          aspect_ratio: { type: "number" },
+          height: { type: "number" },
+          iso_3166_1: { oneOf: [{ type: "string" }, { type: "null" }] },
+          iso_639_1: { oneOf: [{ type: "string" }, { type: "null" }] },
+          file_path: { type: "string" },
+          vote_average: { type: "number" },
+          vote_count: { type: "number" },
+          width: { type: "number" },
+        },
+        additionalProperties: false,
+      },
+    },
+  },
+  additionalProperties: false,
+};
+
+export const collectionTranslationsSchema = {
+  type: "object",
+  required: ["id", "translations"],
+  properties: {
+    id: { type: "number" },
+    translations: {
+      type: "array",
+      items: {
+        type: "object",
+        required: ["iso_639_1", "iso_3166_1", "name", "english_name", "data"],
+        properties: {
+          iso_639_1: { type: "string" },
+          iso_3166_1: { type: "string" },
+          name: { type: "string" },
+          english_name: { type: "string" },
+          data: {
+            type: "object",
+            required: ["title", "overview", "homepage"],
+            properties: {
+              title: { type: "string" },
+              overview: { type: "string" },
+              homepage: { type: "string" },
+            },
+            additionalProperties: false,
+          },
+        },
+        additionalProperties: false,
+      },
+    },
+  },
+  additionalProperties: false,
+};

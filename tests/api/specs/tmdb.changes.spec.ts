@@ -5,7 +5,7 @@ import { validateSchema } from "../utils/schemaValidator";
 // Group all changes-related API tests together
 test.describe("TMDB API - Changes", () => {
   test("Fetch movie list", async ({ tmdbClient }) => {
-    const changes = await tmdbClient.getMovieList();
+    const changes = await tmdbClient.changes.getMovieList();
 
     expect(changes.results).toBeDefined();
 
@@ -24,7 +24,7 @@ test.describe("TMDB API - Changes", () => {
   });
 
   test("Fetch people list", async ({ tmdbClient }) => {
-    const changes = await tmdbClient.getPeopleList();
+    const changes = await tmdbClient.changes.getPeopleList();
 
     expect(changes.results).toBeDefined();
 
@@ -43,7 +43,7 @@ test.describe("TMDB API - Changes", () => {
   });
 
   test("Fetch tv list", async ({ tmdbClient }) => {
-    const changes = await tmdbClient.getTVList();
+    const changes = await tmdbClient.changes.getTVList();
 
     expect(changes.results).toBeDefined();
 

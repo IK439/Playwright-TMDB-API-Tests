@@ -5,7 +5,7 @@ import { validateSchema } from "../utils/schemaValidator";
 // Group all movie certification-related API tests together
 test.describe("TMDB API - Movie Certifications", () => {
   test("Fetch movie certifications", async ({ tmdbClient }) => {
-    const certifications = await tmdbClient.getMovieCertifications();
+    const certifications = await tmdbClient.people.getMovieCertifications();
 
     expect(certifications.certifications).toBeDefined();
 
@@ -37,7 +37,7 @@ test.describe("TMDB API - Movie Certifications", () => {
 // Group all tv certification-related API tests together
 test.describe("TMDB API - TV Certifications", () => {
   test("Fetch tv certifications", async ({ tmdbClient }) => {
-    const certifications = await tmdbClient.getTVCertifications();
+    const certifications = await tmdbClient.people.getTVCertifications();
 
     expect(certifications.certifications).toBeDefined();
 

@@ -3,7 +3,7 @@ import { test, expect } from "../fixtures/api-fixture";
 // Group guest session API tests together
 test.describe("TMDB API - Guest Session", () => {
   test("Create guest session", async ({ tmdbClient }) => {
-    const guestSession = await tmdbClient.createGuestSession();
+    const guestSession = await tmdbClient.auth.createGuestSession();
 
     expect(guestSession.success).toBeTruthy();
     expect(guestSession.guest_session_id).toBeDefined();
@@ -17,7 +17,7 @@ test.describe("TMDB API - Auth", () => {
     tmdbClient,
   }) => {
     // Fetch a request token
-    const token = await tmdbClient.getRequestToken();
+    const token = await tmdbClient.auth.getRequestToken();
 
     expect(token.success).toBeTruthy();
     expect(token.expires_at).toMatch(/\d{4}-\d{2}-\d{2}/);
@@ -28,14 +28,18 @@ test.describe("TMDB API - Auth", () => {
     const passWord = process.env.TMDB_PASSWORD as string;
 
     // Login with credentials and request token
-    const login = await tmdbClient.postAuth(userName, passWord, requestToken);
+    const login = await tmdbClient.auth.postAuth(
+      userName,
+      passWord,
+      requestToken,
+    );
 
     expect(login.success).toBeTruthy();
     expect(login.expires_at).toMatch(/\d{4}-\d{2}-\d{2}/);
     expect(login.request_token).toBeTruthy();
 
     // Create authenticated session with validated request token
-    const createSession = await tmdbClient.createSession(requestToken);
+    const createSession = await tmdbClient.auth.createSession(requestToken);
 
     expect(createSession.success).toBeTruthy();
     expect(createSession.session_id).toBeTruthy();
@@ -43,7 +47,7 @@ test.describe("TMDB API - Auth", () => {
     let sessionId: string = createSession.session_id;
 
     // Terminate the session using session id
-    const deleteSession = await tmdbClient.deleteSession(sessionId);
+    const deleteSession = await tmdbClient.auth.deleteSession(sessionId);
 
     expect(deleteSession.success).toBeTruthy();
   });
@@ -52,13 +56,13 @@ test.describe("TMDB API - Auth", () => {
 // Group validation API tests together
 test.describe("TMDB API - Validate Key", () => {
   test("API key is valid response", async ({ tmdbClient }) => {
-    const validKey = await tmdbClient.validKeyResponse();
+    const validKey = await tmdbClient.auth.validKeyResponse();
 
     expect(validKey.success).toStrictEqual(true);
   });
 
   test("API key is invalid response", async ({ tmdbClient }) => {
-    const invalidKey = await tmdbClient.invalidKeyResponse();
+    const invalidKey = await tmdbClient.auth.invalidKeyResponse();
 
     expect(invalidKey.status_code).toEqual(7);
     expect(invalidKey.status_message).toStrictEqual(

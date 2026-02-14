@@ -5,7 +5,7 @@ import { validateSchema } from "../utils/schemaValidator";
 // Group collection API tests together
 test.describe("TMDB API - Collection", () => {
   test("Fetch collection", async ({ tmdbClient }) => {
-    const collection = await tmdbClient.getCollection();
+    const collection = await tmdbClient.collections.getCollection();
 
     expect(collection.page).toBe(1);
     expect(Array.isArray(collection.results)).toBe(true);
@@ -32,12 +32,12 @@ test.describe("TMDB API - Collection", () => {
 // Group collection details API tests together
 test.describe("TMDB API - Collection Details", () => {
   test("Fetch collection details", async ({ tmdbClient }) => {
-    const collection = await tmdbClient.getCollection();
+    const collection = await tmdbClient.collections.getCollection();
 
     const collectionId: number = collection.results[0].id;
 
     const collectionDetail =
-      await tmdbClient.getCollectionDetails(collectionId);
+      await tmdbClient.collections.getCollectionDetails(collectionId);
 
     expect(collectionDetail.id).toBeDefined();
     expect(collectionDetail.name).toContain("The Avengers Collection");
@@ -75,11 +75,12 @@ test.describe("TMDB API - Collection Details", () => {
 // Group collection images API tests together
 test.describe("TMDB API - Collection Images", () => {
   test("Fetch collection images", async ({ tmdbClient }) => {
-    const collection = await tmdbClient.getCollection();
+    const collection = await tmdbClient.collections.getCollection();
 
     const collectionId: number = collection.results[0].id;
 
-    const collectionImages = await tmdbClient.getCollectionImages(collectionId);
+    const collectionImages =
+      await tmdbClient.collections.getCollectionImages(collectionId);
 
     expect(collectionImages.id).toBeDefined();
     expect(Array.isArray(collectionImages.backdrops)).toBe(true);
@@ -115,12 +116,12 @@ test.describe("TMDB API - Collection Images", () => {
 // Group collection translations API tests together
 test.describe("TMDB API - Collection Translations", () => {
   test("Fetch collection translations", async ({ tmdbClient }) => {
-    const collection = await tmdbClient.getCollection();
+    const collection = await tmdbClient.collections.getCollection();
 
     const collectionId: number = collection.results[0].id;
 
     const collectionTranslations =
-      await tmdbClient.getCollectionTranslations(collectionId);
+      await tmdbClient.collections.getCollectionTranslations(collectionId);
 
     expect(collectionTranslations.id).toBeDefined();
     expect(Array.isArray(collectionTranslations.translations)).toBe(true);

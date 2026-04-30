@@ -6,10 +6,13 @@ export const changesSchema = {
       type: "array",
       items: {
         type: "object",
-        required: ["id", "adult"],
+        required: ["id", "adult", "softcore"],
         properties: {
           id: { type: "number" },
           adult: {
+            oneOf: [{ type: "boolean" }, { type: "null" }],
+          },
+          softcore: {
             oneOf: [{ type: "boolean" }, { type: "null" }],
           },
         },
